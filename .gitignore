@@ -1,0 +1,19 @@
+# Build output
+FxSoundMac/build/
+*.app
+
+# Packaging / probe output
+FxSoundMac/dist/
+FxSoundMac/probe/probe_out/
+
+# macOS / editor junk
+.DS_Store
+**/.DS_Store
+.idea/
+.vscode/
+
+# Internal session/handoff notes — not for this public repo
+*_HANDOFF.md
+*_SESSION.md
+*_SILENCE_DEBUG.md
+DSP_DEBUG*.md

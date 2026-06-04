@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Support FxSound for macOS</title>
+  <style>
+    body {
+      margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: #181818;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .card {
+      max-width: 460px; width: 90%; padding: 40px 32px; text-align: center;
+      background: #1f1f1f; color: #e6e6e6; border: 1px solid #2c2c2c; border-radius: 14px;
+    }
+    .card h1 { font-size: 1.5rem; margin: 0 0 6px; }
+    .card p  { color: #b1b1b1; line-height: 1.5; margin: 0 0 24px; }
+    .accent { color: #e33250; }
+    .block { margin: 22px 0; }
+    .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 12px; }
+    .donate-btn {
+      display: inline-block; padding: 12px 22px; border-radius: 9px; border: none; cursor: pointer;
+      text-decoration: none; color: #fff; font-weight: 600; font-size: 1rem; font-family: inherit;
+    }
+    .donate-btn.paypal { background: #0070ba; }
+    .donate-btn.paypal:hover { background: #005c99; }
+    .donate-btn.samosa { background: #e8732c; }
+    .donate-btn.samosa:hover { background: #cf5f1c; }
+    .upi-id {
+      display: inline-block; margin-top: 14px; padding: 8px 12px; border-radius: 7px;
+      background: #111; border: 1px solid #2c2c2c; color: #e6e6e6; font-family: ui-monospace, Menlo, monospace;
+    }
+    .hint { margin-top: 10px; margin-bottom: 0; font-size: 0.8rem; }
+    hr { border: none; border-top: 1px solid #2c2c2c; margin: 28px 0; }
+    .foot { font-size: 0.8rem; color: #777; }
+    .foot a { color: #b1b1b1; }
+    /* The BMS modal is a light card; keep its text dark/readable. Its own color:#222
+       only applies under a mobile media query, so on desktop the QR caption, "scan to
+       pay" line and logo text would otherwise inherit our page's light text. */
+    #bms-main-card { color: #222; }
+    /* Hide the BMS default floating corner button — we open its modal from our
+       own inline button below the India label instead. */
+    #bms_togglebutton { display: none !important; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Support <span class="accent">FxSound for macOS</span></h1>
+    <p>A community-built macOS port. If it's useful to you, a small tip keeps it going. Thank you 🙏</p>
+
+    <div class="block">
+      <div class="label">International — PayPal</div>
+      <a class="donate-btn paypal" href="https://paypal.me/okku007" target="_blank" rel="noopener">Donate via PayPal</a>
+    </div>
+
+    <div class="block">
+      <div class="label">India — UPI (Buy Me a Samosa)</div>
+      <button type="button" class="donate-btn samosa" onclick="toggle_bms_lb()">🥟 Buy Me a Samosa</button>
+      <div><span class="upi-id">8511050567@okbizaxis</span></div>
+      <p class="hint">Or pay the UPI ID above directly in any UPI app (GPay, PhonePe, Paytm…).</p>
+    </div>
+
+    <hr />
+    <p class="foot">
+      Back to <a href="https://github.com/okku007/fxsound-macos">FxSound for macOS</a> ·
+      Original <a href="https://github.com/fxsound2/fxsound-app">FxSound</a> (AGPLv3)
+    </p>
+  </main>
+
+  <!-- Loaded at end of body so it runs after the page is fully parsed: bms.js does
+       document.body.innerHTML += ..., which clobbers any markup that follows it. It
+       provides the QR/pay modal (#bms-main-card) and toggle_bms_lb(); our samosa
+       button above opens it. -->
+  <script data-bms="bms" data-bms_userupi="8511050567@okbizaxis" data-bms_user_name="Moksh Desai" data-bms_user_amount=""
+    data-bms_usertmsq="" src="https://buymeasamosa.github.io/bms-js/bms.js"></script>
+</body>
+</html>
