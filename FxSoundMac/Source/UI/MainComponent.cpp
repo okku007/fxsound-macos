@@ -360,12 +360,33 @@ void MainComponent::showSettingsMenu()
     m.addSectionHeader("Close button behavior");
     m.addItem(1, "Quit FxSound",                 true, quits);
     m.addItem(2, "Keep running (hide window)",   true, !quits);
+    m.addSeparator();
+    m.addItem(3, "Open Visualizer");
 
     m.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(settingsButton_),
-        [](int result)
+        [this](int result)
         {
             if (result == 1)      AppSettings::setCloseQuitsApp(true);
             else if (result == 2) AppSettings::setCloseQuitsApp(false);
+            else if (result == 3) openVisualizer();
+        });
+}
+
+void MainComponent::openVisualizer()
+{
+    if (visualizerWindow_ != nullptr)
+    {
+        visualizerWindow_->toFront(true);
+        return;
+    }
+
+    visualizerWindow_ = std::make_unique<VisualizerWindow>(
+        controller,
+        [this]
+        {
+            // Deferred: closeButtonPressed is called from inside the window, so we must
+            // not delete it on this stack frame.
+            juce::MessageManager::callAsync([this] { visualizerWindow_.reset(); });
         });
 }
 

@@ -56,6 +56,11 @@ DfxDspPrivate::DfxDspPrivate()
 	midi_to_rval_qnt_handle_ = NULL;
 	rval_to_midi_qnt_handle_ = NULL;
 
+	// Never assigned anywhere, but the destructor does `if (slout1_ != NULL) delete slout1_;`.
+	// Left uninitialized it holds whatever was in the reused heap memory, so the destructor
+	// frees a garbage pointer. Zero-filled fresh pages hid this; allocator churn exposes it.
+	slout1_ = NULL;
+
 	swprintf(product_specific_.wcp_registry_product_name, PT_MAX_GENERIC_STRLEN, L"%s", DFXG_REGISTRY_DFX_PRODUCT_NAME_WIDE);
 	swprintf(product_specific_.wcp_displayed_product_name, PT_MAX_GENERIC_STRLEN, L"%s", DFXG_DISPLAYED_DFX_PRODUCT_NAME_WIDE);
 	product_specific_.full_version = static_cast<float>(13.028);

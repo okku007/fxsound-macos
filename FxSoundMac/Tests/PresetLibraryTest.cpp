@@ -16,7 +16,7 @@ struct PresetLibraryTest : juce::UnitTest
 
         beginTest("discovers only .fac files");
         PresetLibrary lib;
-        lib.scan(tmp);
+        lib.scan(tmp, juce::File());
         expectEquals(lib.getNumPresets(), 2);
 
         beginTest("preset names are sorted and stripped of extension");
@@ -30,7 +30,7 @@ struct PresetLibraryTest : juce::UnitTest
         auto empty = tmp.getChildFile("empty");
         empty.createDirectory();
         PresetLibrary lib2;
-        lib2.scan(empty);
+        lib2.scan(empty, juce::File());
         expectEquals(lib2.getNumPresets(), 0);
 
         tmp.deleteRecursively();

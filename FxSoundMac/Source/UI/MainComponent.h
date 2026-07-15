@@ -4,6 +4,7 @@
 #include "FxEffects.h"
 #include "FxEqualizer.h"
 #include "SetupStatusPanel.h"
+#include "../App/VisualizerWindow.h"
 #include "../Support/FxController.h"
 #include "../Support/PresetLibrary.h"
 #include "../Audio/MacAudioEngine.h"
@@ -30,12 +31,14 @@ private:
     void doImportPreset();        // pick a .fac off disk, copy into the user preset folder
     void doDeletePreset();        // delete the current preset (custom only)
     void showSettingsMenu();      // gear button → close-behavior preference
+    void openVisualizer();        // settings → Open Visualizer
 
     static juce::File bundledPresetDir();
     static juce::File userPresetDir();   // ~/Library/Application Support/FxSound/Presets
 
     // FxController must be first — sub-components hold a reference to it
     FxController   controller;
+    std::unique_ptr<VisualizerWindow> visualizerWindow_;
     MacAudioEngine engine { controller };
     PresetLibrary  presetLibrary;
 

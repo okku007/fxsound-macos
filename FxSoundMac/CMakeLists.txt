@@ -61,12 +61,21 @@ target_sources(FxSoundMac PRIVATE
     Source/Audio/MacAudioEngine.cpp
     Source/Support/PresetLibrary.cpp
     Source/Support/FxController.cpp
+    Source/Visualizer/VisualizerTap.cpp
+    Source/Visualizer/SpectrumAnalyzer.cpp
+    Source/Visualizer/EqCurveModel.cpp
+    Source/Visualizer/DeltaTrace.cpp
     Source/UI/FxTheme.cpp
     Source/UI/FxPowerButton.cpp
     Source/UI/FxEffects.cpp
     Source/UI/FxEqualizer.cpp
     Source/UI/MainComponent.cpp
     Source/UI/SetupStatusPanel.cpp
+    Source/App/VisualizerWindow.cpp
+    Source/UI/Visualizer/EqGraphView.cpp
+    Source/UI/Visualizer/VisualizerComponent.cpp
+    Source/UI/Visualizer/GoniometerView.cpp
+    Source/UI/Visualizer/LevelMeterView.cpp
 )
 
 target_compile_definitions(FxSoundMac PRIVATE
@@ -80,6 +89,7 @@ target_link_libraries(FxSoundMac PRIVATE
     juce::juce_audio_utils
     juce::juce_audio_devices
     juce::juce_audio_basics
+    juce::juce_dsp
     juce::juce_gui_extra
     juce::juce_recommended_config_flags
     juce::juce_recommended_warning_flags
@@ -92,6 +102,9 @@ target_include_directories(FxSoundMac PRIVATE
     Source/Audio
     Source/Support
     Source/UI
+    Source/Visualizer
+    Source/UI/Visualizer
+    Source/App
 )
 
 # Ad-hoc codesign for local development/testing.
@@ -111,17 +124,38 @@ target_sources(FxSoundMacTests PRIVATE
     Tests/DeviceValidationTest.cpp
     Tests/PresetLibraryTest.cpp
     Tests/FxControllerTest.cpp
+    Tests/VisualizerTapTest.cpp
+    Tests/SpectrumAnalyzerTest.cpp
+    Tests/EqCurveModelTest.cpp
+    Tests/DeltaTraceTest.cpp
+    Tests/EqProbeTest.cpp
+    Tests/VisualizerRenderTest.cpp
     Source/DSP/LegacyDspAdapter.cpp
     Source/Audio/DeviceValidation.cpp
     Source/Support/PresetLibrary.cpp
     Source/Support/FxController.cpp
+    Source/Visualizer/VisualizerTap.cpp
+    Source/Visualizer/SpectrumAnalyzer.cpp
+    Source/Visualizer/EqCurveModel.cpp
+    Source/Visualizer/DeltaTrace.cpp
+    # Rendered offscreen by VisualizerRenderTest. FxTheme is here only for its static
+    # getColor(); constructing the LookAndFeel (and its fonts) is not needed to paint.
+    Source/UI/FxTheme.cpp
+    Source/UI/Visualizer/EqGraphView.cpp
+    Source/UI/Visualizer/GoniometerView.cpp
 )
 
 target_link_libraries(FxSoundMacTests PRIVATE
     juce::juce_core
     juce::juce_audio_basics
+    juce::juce_dsp
+    # The visualizer views are Components, so the render test needs the GUI module even
+    # though this is a console app. Nothing here opens a window: everything is painted
+    # into a juce::Image by the software renderer.
+    juce::juce_gui_basics
     juce::juce_recommended_config_flags
     juce::juce_recommended_warning_flags
+    FxSoundMacAssets
     DfxDspMac
 )
 
@@ -130,6 +164,9 @@ target_include_directories(FxSoundMacTests PRIVATE
     Source/DSP
     Source/Audio
     Source/Support
+    Source/Visualizer
+    Source/UI
+    Source/UI/Visualizer
 )
 
 add_test(NAME FxSoundMacTests COMMAND FxSoundMacTests)

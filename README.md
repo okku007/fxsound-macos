@@ -1,5 +1,14 @@
 # FxSound for macOS
 
+> ## ⚠️ Experimental branch
+>
+> **This is the `experimental` branch.** It carries an in-development **audio
+> visualizer** (live spectrum, EQ curve, measured-response and goniometer views)
+> on top of the stable port. It is under active testing, may be unstable, and is
+> **not recommended for general use**.
+>
+> For the stable clone-and-build, use the **[`main`](https://github.com/okku007/fxsound-macos/tree/main)** branch instead.
+
 A community-driven **macOS port of [FxSound](https://www.fxsound.com/)** — the
 real-time system-wide audio enhancer (EQ, clarity, bass, dynamic boost) that
 many people know from Windows. This repo lets you **clone it and build a native

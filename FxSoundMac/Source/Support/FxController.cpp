@@ -3,6 +3,7 @@
 void FxController::prepare(int sampleRate, int maxBlockSize)
 {
     adapter.prepare(sampleRate, maxBlockSize);
+    currentSampleRate.store(sampleRate, std::memory_order_relaxed);
     prepared = true;
 }
 
@@ -34,5 +35,14 @@ bool FxController::savePreset(const juce::File& directory, const juce::String& n
 void FxController::processBlock(juce::AudioBuffer<float>& buffer)
 {
     if (! prepared) return;
+
+    // Read the flag once: if the window closes mid-block we still want a matched
+    // dry/wet pair rather than a dry push with no wet counterpart.
+    const bool tapping = tap.isActive();
+
+    if (tapping) tap.pushDry(buffer);
+
     adapter.process(buffer);
+
+    if (tapping) tap.pushWet(buffer);
 }
